@@ -131,11 +131,16 @@ async function syncPendingActions() {
     }
 }
 
-async function openSyncDB() {
-    return new Promise((resolve, reject) => {
-        const request = indexedDB.open('frappe-pwa-db', 1);
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
-    });
+/* PERIODIC SYNC */
+
+self.addEventListener('periodicsync', (event) => {
+    if (event.tag === 'pwa-periodic-refresh') {
+        event.waitUntil(refreshPWAData());
+    }
+});
+
+async function refreshPWAData() {
+    console.log('PWA: Periodic sync running...');
+    // Logic to refresh data will go here (e.g., re-sync search index)
 }
 

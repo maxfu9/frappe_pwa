@@ -14,10 +14,22 @@ def get_manifest():
 		"display": "standalone",
 		"background_color": settings.background_color or "#ffffff",
 		"theme_color": settings.theme_color or "#0089FF",
-		"icons": []
+		"icons": [],
+		"shortcuts": []
 	}
+	
+	for s in settings.get("shortcuts") or []:
+		shortcut = {
+			"name": s.label,
+			"url": s.url,
+			"description": s.description or ""
+		}
+		if s.icon:
+			shortcut["icons"] = [{"src": s.icon, "sizes": "192x192"}]
+		manifest["shortcuts"].append(shortcut)
 
 	if settings.app_logo:
+
 		manifest["icons"].append({
 			"src": settings.app_logo,
 			"sizes": "192x192",
@@ -65,4 +77,24 @@ def sync_offline_action(doctype, docname, action, data):
 		return {"status": "success", "message": _("{0} created").format(doctype)}
 	
 	return {"status": "error", "message": _("Action {0} not supported").format(action)}
+
+@frappe.whitelist()
+def get_search_data():
+	"""
+	Returns a list of searchable records for offline indexing.
+	In a real scenario, this would be highly optimized and filtered.
+	"""
+	# Indexing ToDos as an example
+	todos = frappe.get_all("ToDo", fields=["name", "description", "status", "owner"])
+	
+	# Indexing Customers (if they exist)
+	customers = []
+	if frappe.db.exists("DocType", "Customer"):
+		customers = frappe.get_all("Customer", fields=["name", "customer_name", "territory"], limit=100)
+		
+	return {
+		"ToDo": todos,
+		"Customer": customers
+	}
+
 

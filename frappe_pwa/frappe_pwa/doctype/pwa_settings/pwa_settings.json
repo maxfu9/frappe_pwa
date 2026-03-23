@@ -10,7 +10,9 @@
   "description",
   "theme_color",
   "background_color",
-  "app_logo"
+  "app_logo",
+  "enable_biometric_lock",
+  "shortcuts"
  ],
  "fields": [
   {
@@ -44,8 +46,20 @@
    "fieldname": "app_logo",
    "fieldtype": "Attach Image",
    "label": "App Logo"
+  },
+  {
+   "fieldname": "enable_biometric_lock",
+   "fieldtype": "Check",
+   "label": "Enable Biometric Lock (FaceID/TouchID)"
+  },
+  {
+   "fieldname": "shortcuts",
+   "fieldtype": "Table",
+   "label": "App Shortcuts (Quick Actions)",
+   "options": "PWA Shortcut"
   }
  ],
+
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],

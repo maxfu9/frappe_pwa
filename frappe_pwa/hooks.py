@@ -32,7 +32,8 @@ app_include_css = [
 app_include_js = [
     "/assets/frappe_pwa/js/pwa_loader.js",
     "/assets/frappe_pwa/js/pwa_install.js",
-    "/assets/frappe_pwa/js/pwa_sync.js"
+    "/assets/frappe_pwa/js/pwa_sync.js",
+    "/assets/frappe_pwa/js/pwa_native.js"
 ]
 
 # include js, css files in header of web template
