@@ -5,10 +5,14 @@ A Frappe app to enhance your site with Progressive Web App (PWA) capabilities, i
 ## Features
 
 - **PWA Support**: Adds a `manifest.json` for "Add to Home Screen" functionality.
+- **Dynamic Configuration**: Configure App Name, Colors, and Logo directly from the **PWA Settings** DocType.
 - **Service Worker**: Provides a background service worker for offline support and asset caching.
+- **Advanced Notifications**: Support for Push Notifications and the **Badge API** (app icon notification count).
+- **Background Sync**: Queues actions performed offline and syncs them automatically when the network returns.
+- **Custom Install UI**: Includes a premium, branded installation banner for a better user onboarding experience.
+- **Themed UI**: A modern, glassmorphism-inspired design for the Frappe Desk.
 - **Navigation Fixes**: Enhances the user experience on mobile by handling navigation events and providing an offline fallback.
-- **Push Notifications**: Foundations for stacking and managing push notifications on desktop and mobile.
-- **Easy Integration**: Hooks directly into the Frappe Desk and Website view.
+
 
 ## Installation
 
