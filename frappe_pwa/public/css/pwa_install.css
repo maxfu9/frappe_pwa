@@ -77,6 +77,26 @@
     background: #0070d1;
 }
 
+#pwa-install-banner .pwa-banner-icon i.fa-apple {
+    color: #000;
+    font-size: 24px;
+}
+
+#pwa-install-banner.ios-banner {
+    border-bottom: 5px solid #007aff; /* Apple Blue */
+}
+
+#pwa-install-banner.ios-banner strong {
+    color: #007aff;
+}
+
+#pwa-install-banner img {
+    height: 22px;
+    margin: 0 4px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .pwa-close-btn {
     background: transparent;
     border: none;

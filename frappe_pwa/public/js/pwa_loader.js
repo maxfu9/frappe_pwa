@@ -7,7 +7,25 @@ if (!document.querySelector('link[rel="manifest"]')) {
     link.href = '/api/method/frappe_pwa.api.get_manifest';
     document.head.appendChild(link);
     console.log("PWA: Manifest link injected");
+
+    // iOS Specific Meta Tags
+    const metaTags = [
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        { name: 'apple-mobile-web-app-title', content: document.title },
+        { rel: 'apple-touch-icon', href: '/assets/frappe_pwa/images/logo.png' } // Fallback, will be updated by settings
+    ];
+
+    metaTags.forEach(tag => {
+        const el = document.createElement(tag.rel ? 'link' : 'meta');
+        if (tag.rel) el.rel = tag.rel;
+        if (tag.name) el.name = tag.name;
+        el.content = tag.content || '';
+        if (tag.href) el.href = tag.href;
+        document.head.appendChild(el);
+    });
 }
+
 
 // Clear App Badge on load
 if (navigator.clearAppBadge) {

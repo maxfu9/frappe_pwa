@@ -11,6 +11,47 @@ window.addEventListener('beforeinstallprompt', (e) => {
     showInstallBanner();
 });
 
+// iOS Support: Show manual instructions since beforeinstallprompt isn't supported
+window.addEventListener('load', () => {
+    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (isiOS && !isStandalone) {
+        showiOSInstallBanner();
+    }
+});
+
+function showiOSInstallBanner() {
+    if (localStorage.getItem('pwa-ios-banner-dismissed')) return;
+
+    const banner = document.createElement('div');
+    banner.id = 'pwa-install-banner';
+    banner.classList.add('ios-banner');
+    banner.innerHTML = `
+        <div class="pwa-banner-content">
+            <div class="pwa-banner-icon">
+                <i class="fa fa-apple"></i>
+            </div>
+            <div class="pwa-banner-text">
+                <h4>Install on iOS</h4>
+                <p>Tap <img src="/assets/frappe_pwa/images/ios_share.png" style="height:20px; vertical-align:middle;"> then <strong>Add to Home Screen</strong>.</p>
+            </div>
+        </div>
+        <div class="pwa-banner-actions">
+            <button class="pwa-close-btn" id="pwa-ios-install-close">&times;</button>
+        </div>
+    `;
+    document.body.appendChild(banner);
+
+    document.getElementById('pwa-ios-install-close').addEventListener('click', () => {
+        hideInstallBanner();
+        localStorage.setItem('pwa-ios-banner-dismissed', Date.now());
+    });
+
+    setTimeout(() => banner.classList.add('show'), 1000);
+}
+
+
 function showInstallBanner() {
     if (localStorage.getItem('pwa-banner-dismissed')) return;
 

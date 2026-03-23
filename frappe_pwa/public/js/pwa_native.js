@@ -117,9 +117,13 @@ window.pwa_native = {
 
     // 3. Haptic Feedback (Vibration API)
     haptic(type = 'success') {
-        if (!("vibrate" in navigator)) return;
+        if (!navigator.vibrate) {
+            console.debug("PWA: Vibration API not supported on this device/browser");
+            return;
+        }
 
         switch (type) {
+
             case 'success':
                 navigator.vibrate(50);
                 break;
