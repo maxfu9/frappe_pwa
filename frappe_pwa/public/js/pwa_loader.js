@@ -1,5 +1,14 @@
 console.log("PWA: Loader initializing...");
 
+// Dynamically add manifest link
+if (!document.querySelector('link[rel="manifest"]')) {
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/api/method/frappe_pwa.api.get_manifest';
+    document.head.appendChild(link);
+    console.log("PWA: Manifest link injected");
+}
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
@@ -12,3 +21,4 @@ if ("serviceWorker" in navigator) {
             });
     });
 }
+
