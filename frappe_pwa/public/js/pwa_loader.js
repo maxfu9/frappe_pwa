@@ -9,22 +9,43 @@ if (!document.querySelector('link[rel="manifest"]')) {
     console.log("PWA: Manifest link injected");
 
     // iOS Specific Meta Tags
+    fetch('/api/method/frappe_pwa.api.get_manifest')
+        .then(r => r.json())
+        .then(manifest => {
+            const logo = manifest.icons && manifest.icons.length > 0 ? manifest.icons[0].src : '';
+            if (logo) {
+                const appleIcon = document.createElement('link');
+                appleIcon.rel = 'apple-touch-icon';
+                appleIcon.href = logo;
+                document.head.appendChild(appleIcon);
+                console.log("PWA: Apple Touch Icon injected from manifest");
+            }
+        });
+
     const metaTags = [
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
-        { name: 'apple-mobile-web-app-title', content: document.title },
-        { rel: 'apple-touch-icon', href: '/assets/frappe_pwa/images/logo.png' } // Fallback, will be updated by settings
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }
     ];
 
     metaTags.forEach(tag => {
-        const el = document.createElement(tag.rel ? 'link' : 'meta');
-        if (tag.rel) el.rel = tag.rel;
-        if (tag.name) el.name = tag.name;
-        el.content = tag.content || '';
-        if (tag.href) el.href = tag.href;
+        const el = document.createElement('meta');
+        el.name = tag.name;
+        el.content = tag.content;
         document.head.appendChild(el);
     });
 }
+
+// OS & Feature Compatibility Report
+console.log("PWA Compatibility Report:", {
+    iOS: /iPad|iPhone|iPod/.test(navigator.userAgent),
+    Standalone: window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches,
+    ServiceWorker: 'serviceWorker' in navigator,
+    VibrationAPI: 'vibrate' in navigator,
+    PushManager: 'PushManager' in window,
+    WebAuthn: 'PublicKeyCredential' in window,
+    Badging: 'setAppBadge' in navigator
+});
+
 
 
 // Clear App Badge on load

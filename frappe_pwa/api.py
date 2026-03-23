@@ -25,20 +25,30 @@ def get_manifest():
 			"description": s.description or ""
 		}
 		if s.icon:
-			shortcut["icons"] = [{"src": s.icon, "sizes": "192x192"}]
+			# Ensure absolute URL for iOS shortcuts
+			icon_url = s.icon if s.icon.startswith('http') else frappe.utils.get_url(s.icon)
+			shortcut["icons"] = [{
+				"src": icon_url, 
+				"sizes": "192x192",
+				"type": "image/png",
+				"purpose": "any"
+			}]
 		manifest["shortcuts"].append(shortcut)
 
 	if settings.app_logo:
-
+		# iOS and Android both benefit from explicit types and purpose
+		logo_url = settings.app_logo
 		manifest["icons"].append({
-			"src": settings.app_logo,
+			"src": logo_url,
 			"sizes": "192x192",
-			"type": "image/png" if settings.app_logo.endswith(".png") else "image/svg+xml"
+			"type": "image/png",
+			"purpose": "any maskable"
 		})
 		manifest["icons"].append({
-			"src": settings.app_logo,
+			"src": logo_url,
 			"sizes": "512x512",
-			"type": "image/png" if settings.app_logo.endswith(".png") else "image/svg+xml"
+			"type": "image/png",
+			"purpose": "any maskable"
 		})
 	else:
 		# Fallback icons
