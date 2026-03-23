@@ -1,0 +1,22 @@
+{
+  "name": "Frappe ERP",
+  "short_name": "Frappe",
+  "description": "Enterprise Resource Planning with Frappe",
+  "start_url": "/app",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0089FF",
+  "icons": [
+    {
+      "src": "/assets/frappe/images/frappe-framework-logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/frappe/images/frappe-framework-logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
