@@ -14,7 +14,9 @@ A Frappe app to enhance your site with Progressive Web App (PWA) capabilities, i
 - **Biometric Authentication**: Secure your PWA with native **FaceID/TouchID** (WebAuthn) support.
 - **Offline Search**: A fast, client-side keyword search index that works without an internet connection.
 - **Themed UI**: A modern, glassmorphism-inspired design for the Frappe Desk.
+- **Haptic Feedback**: Native vibration support for success, error, and warning events.
 - **Navigation Fixes**: Enhances the user experience on mobile by handling navigation events and providing an offline fallback.
+
 
 
 
