@@ -1,41 +1,43 @@
-### Frappe PWA
+# Frappe PWA Utility
 
-PWA Utility for Navigation Fixes
+A Frappe app to enhance your site with Progressive Web App (PWA) capabilities, including service worker registration, web manifest support, and navigation improvements for mobile devices.
 
-### Installation
+## Features
+
+- **PWA Support**: Adds a `manifest.json` for "Add to Home Screen" functionality.
+- **Service Worker**: Provides a background service worker for offline support and asset caching.
+- **Navigation Fixes**: Enhances the user experience on mobile by handling navigation events and providing an offline fallback.
+- **Push Notifications**: Foundations for stacking and managing push notifications on desktop and mobile.
+- **Easy Integration**: Hooks directly into the Frappe Desk and Website view.
+
+## Installation
 
 You can install this app using the [bench](https://github.com/frappe/bench) CLI:
 
 ```bash
 cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
+bench get-app https://github.com/maxfu9/frappe_pwa
 bench install-app frappe_pwa
 ```
 
-### Contributing
+## How It Works
 
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+- **`manifest.json`**: Configures the app name, icons, and theme colors for standalone display.
+- **`sw.js`**: A service worker that caches the offline page and intercepts navigation requests to provide a fallback when the network is unavailable.
+- **`pwa_loader.js`**: Automatically registered via `hooks.py` to initialize the service worker in the browser.
+
+## Contributing
+
+This app uses `pre-commit` for code formatting and linting.
 
 ```bash
 cd apps/frappe_pwa
 pre-commit install
 ```
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
+Tools used: `ruff`, `eslint`, `prettier`, `pyupgrade`.
 
-- ruff
-- eslint
-- prettier
-- pyupgrade
+## License
 
-### CI
+MIT
 
-This app can use GitHub Actions for CI. The following workflows are configured:
-
-- CI: Installs this app and runs unit tests on every push to `develop` branch.
-- Linters: Runs [Frappe Semgrep Rules](https://github.com/frappe/semgrep-rules) and [pip-audit](https://pypi.org/project/pip-audit/) on every pull request.
-
-
-### License
-
-mit
