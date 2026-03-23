@@ -105,5 +105,29 @@ window.pwa_native = {
             request.onsuccess = () => resolve(request.result);
             request.onerror = () => reject(request.error);
         });
+    },
+
+    // 3. Haptic Feedback (Vibration API)
+    haptic(type = 'success') {
+        if (!("vibrate" in navigator)) return;
+
+        switch (type) {
+            case 'success':
+                navigator.vibrate(50);
+                break;
+            case 'error':
+                navigator.vibrate([50, 50, 50]);
+                break;
+            case 'warning':
+                navigator.vibrate(200);
+                break;
+            case 'heavy':
+                navigator.vibrate([100, 50, 100]);
+                break;
+            case 'light':
+                navigator.vibrate(20);
+                break;
+        }
     }
 };
+

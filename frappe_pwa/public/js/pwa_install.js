@@ -35,9 +35,17 @@ function showInstallBanner() {
         `;
         document.body.appendChild(banner);
 
+        // Haptic on show
+        if (window.pwa_native) window.pwa_native.haptic('light');
+
         document.getElementById('pwa-install-confirm').addEventListener('click', async () => {
             if (!deferredPrompt) return;
+
+            // Haptic on click
+            if (window.pwa_native) window.pwa_native.haptic('success');
+
             // Show the install prompt
+
             deferredPrompt.prompt();
             // Wait for the user to respond to the prompt
             const { outcome } = await deferredPrompt.userChoice;

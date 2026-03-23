@@ -53,4 +53,33 @@ window.addEventListener('load', async () => {
     }
 });
 
+// Global Haptic Triggers for Frappe Alerts & Messages
+window.addEventListener('load', () => {
+    if (!window.frappe) return;
+
+    // 1. Hook into show_alert
+    const original_show_alert = frappe.show_alert;
+    frappe.show_alert = function(message, seconds) {
+        if (window.pwa_native) {
+            const indicator = typeof message === 'object' ? message.indicator : 'blue';
+            if (['green', 'blue'].includes(indicator)) window.pwa_native.haptic('success');
+            else if (indicator === 'orange') window.pwa_native.haptic('warning');
+            else if (indicator === 'red') window.pwa_native.haptic('error');
+        }
+        return original_show_alert.apply(this, arguments);
+    };
+
+    // 2. Hook into msgprint
+    const original_msgprint = frappe.msgprint;
+    frappe.msgprint = function(args) {
+        if (window.pwa_native) {
+            const indicator = typeof args === 'object' ? args.indicator : 'blue';
+            if (indicator === 'red') window.pwa_native.haptic('error');
+            else window.pwa_native.haptic('light');
+        }
+        return original_msgprint.apply(this, arguments);
+    };
+});
+
+
 
