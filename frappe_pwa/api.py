@@ -45,3 +45,24 @@ def get_manifest():
 
 	frappe.response["type"] = "json"
 	frappe.response["body"] = manifest
+
+@frappe.whitelist()
+def sync_offline_action(doctype, docname, action, data):
+	"""
+	Universal handler for syncing offline actions.
+	For now, it supports simple doc updates.
+	"""
+	if action == "update":
+		doc = frappe.get_doc(doctype, docname)
+		doc.update(data)
+		doc.save()
+		return {"status": "success", "message": _("{0} {1} updated").format(doctype, docname)}
+	
+	elif action == "create":
+		doc = frappe.new_doc(doctype)
+		doc.update(data)
+		doc.insert()
+		return {"status": "success", "message": _("{0} created").format(doctype)}
+	
+	return {"status": "error", "message": _("Action {0} not supported").format(action)}
+

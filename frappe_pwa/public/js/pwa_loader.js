@@ -9,6 +9,14 @@ if (!document.querySelector('link[rel="manifest"]')) {
     console.log("PWA: Manifest link injected");
 }
 
+// Clear App Badge on load
+if (navigator.clearAppBadge) {
+    navigator.clearAppBadge().catch((err) => {
+        console.error("PWA: Failed to clear badge", err);
+    });
+}
+
+
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
         navigator.serviceWorker
