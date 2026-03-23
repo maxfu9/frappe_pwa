@@ -57,10 +57,15 @@ window.addEventListener('load', async () => {
 window.addEventListener('load', () => {
     if (!window.frappe) return;
 
+    // Fetch and cache haptic settings
+    const haptic_enabled = () => {
+        return localStorage.getItem('pwa-haptic-enabled') !== '0';
+    };
+
     // 1. Hook into show_alert
     const original_show_alert = frappe.show_alert;
     frappe.show_alert = function(message, seconds) {
-        if (window.pwa_native) {
+        if (window.pwa_native && haptic_enabled()) {
             const indicator = typeof message === 'object' ? message.indicator : 'blue';
             if (['green', 'blue'].includes(indicator)) window.pwa_native.haptic('success');
             else if (indicator === 'orange') window.pwa_native.haptic('warning');
@@ -72,14 +77,24 @@ window.addEventListener('load', () => {
     // 2. Hook into msgprint
     const original_msgprint = frappe.msgprint;
     frappe.msgprint = function(args) {
-        if (window.pwa_native) {
+        if (window.pwa_native && haptic_enabled()) {
             const indicator = typeof args === 'object' ? args.indicator : 'blue';
             if (indicator === 'red') window.pwa_native.haptic('error');
             else window.pwa_native.haptic('light');
         }
         return original_msgprint.apply(this, arguments);
     };
+
+    // Sync Settings on Load
+    frappe.db.get_value('PWA Settings', 'PWA Settings', ['enable_haptic_feedback', 'enable_biometric_lock'])
+        .then(r => {
+            if (r.message) {
+                localStorage.setItem('pwa-haptic-enabled', r.message.enable_haptic_feedback);
+                localStorage.setItem('pwa-biometric-lock-enabled', r.message.enable_biometric_lock);
+            }
+        }).catch(err => console.debug("PWA: Could not fetch settings", err));
 });
+
 
 
 

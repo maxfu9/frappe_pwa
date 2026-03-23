@@ -12,6 +12,7 @@
   "background_color",
   "app_logo",
   "enable_biometric_lock",
+  "enable_haptic_feedback",
   "shortcuts"
  ],
  "fields": [
@@ -19,46 +20,64 @@
    "fieldname": "app_name",
    "fieldtype": "Data",
    "label": "App Name",
-   "reqd": 1
+   "reqd": 1,
+   "description": "The full name of your application (e.g., Europlast ERP)"
   },
   {
    "fieldname": "app_short_name",
    "fieldtype": "Data",
    "label": "App Short Name",
-   "reqd": 1
+   "reqd": 1,
+   "description": "A shorter version for the home screen (max 12 characters)"
   },
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
-   "label": "Description"
+   "label": "Description",
+   "description": "Short description of what your app does"
   },
   {
    "fieldname": "theme_color",
    "fieldtype": "Color",
-   "label": "Theme Color"
+   "label": "Theme Color",
+   "description": "The color of the browser address bar and UI elements"
   },
   {
    "fieldname": "background_color",
    "fieldtype": "Color",
-   "label": "Background Color"
+   "label": "Background Color",
+   "description": "The background color of the splash screen"
   },
   {
    "fieldname": "app_logo",
    "fieldtype": "Attach Image",
-   "label": "App Logo"
+   "label": "App Logo",
+   "description": "Primary logo (must be square, 512x512 recommended)"
   },
   {
+   "default": "1",
    "fieldname": "enable_biometric_lock",
    "fieldtype": "Check",
-   "label": "Enable Biometric Lock (FaceID/TouchID)"
+   "label": "Enable Biometric Lock (FaceID/TouchID)",
+   "description": "Require fingerprint or face scan to open the app"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_haptic_feedback",
+   "fieldtype": "Check",
+   "label": "Enable Haptic Feedback (Vibration)",
+   "description": "Vibrate the device on success, error, or interaction"
   },
   {
    "fieldname": "shortcuts",
    "fieldtype": "Table",
    "label": "App Shortcuts (Quick Actions)",
-   "options": "PWA Shortcut"
+   "options": "PWA Shortcut",
+   "description": "Actions visible when long-pressing the app icon"
   }
  ],
+ "icon": "file-text",
+
 
  "index_web_pages_for_search": 1,
  "issingle": 1,

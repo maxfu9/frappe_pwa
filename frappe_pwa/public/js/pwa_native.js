@@ -60,28 +60,36 @@ window.pwa_native = {
 
     // 2. Offline Search (IndexedDB Keyword Index)
     async syncSearchIndex() {
-        console.log("PWA: Syncing search index...");
-        const data = await frappe.call("frappe_pwa.api.get_search_data");
-        if (!data.message) return;
+        try {
+            console.log("PWA: Syncing search index...");
+            const data = await frappe.call("frappe_pwa.api.get_search_data");
+            if (!data.message) return;
 
-        const db = await this.openDB();
-        const tx = db.transaction(SEARCH_STORE, 'readwrite');
-        const store = tx.objectStore(SEARCH_STORE);
-        await store.clear();
+            const db = await this.openDB();
+            const tx = db.transaction(SEARCH_STORE, 'readwrite');
+            const store = tx.objectStore(SEARCH_STORE);
+            await store.clear();
 
-        for (const [doctype, records] of Object.entries(data.message)) {
-            for (const record of records) {
-                const textToIndex = Object.values(record).join(" ").toLowerCase();
-                await store.add({
-                    doctype,
-                    name: record.name,
-                    content: textToIndex,
-                    record: record
-                });
+            for (const [doctype, records] of Object.entries(data.message)) {
+                // Limit to 500 records per doctype for production stability
+                const limited_records = records.slice(0, 500);
+                
+                for (const record of limited_records) {
+                    const textToIndex = Object.values(record).join(" ").toLowerCase();
+                    await store.add({
+                        doctype,
+                        name: record.name,
+                        content: textToIndex,
+                        record: record
+                    });
+                }
             }
+            console.log("PWA: Search index updated successfully");
+        } catch (err) {
+            console.error("PWA: Search index sync failed", err);
         }
-        console.log("PWA: Search index updated");
     },
+
 
     async search(query) {
         const db = await this.openDB();

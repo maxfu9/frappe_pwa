@@ -61,22 +61,39 @@ def get_manifest():
 @frappe.whitelist()
 def sync_offline_action(doctype, docname, action, data):
 	"""
-	Universal handler for syncing offline actions.
-	For now, it supports simple doc updates.
+	Universal handler for syncing offline actions with permission checks.
 	"""
+	if not doctype or not action:
+		return {"status": "error", "message": _("Missing doctype or action")}
+
+	# Data validation
+	if isinstance(data, str):
+		try:
+			import json
+			data = json.loads(data)
+		except:
+			return {"status": "error", "message": _("Invalid data format")}
+
 	if action == "update":
+		if not frappe.has_permission(doctype, "write", docname):
+			return {"status": "error", "message": _("No permission to update {0}").format(docname)}
+		
 		doc = frappe.get_doc(doctype, docname)
 		doc.update(data)
 		doc.save()
 		return {"status": "success", "message": _("{0} {1} updated").format(doctype, docname)}
 	
 	elif action == "create":
+		if not frappe.has_permission(doctype, "create"):
+			return {"status": "error", "message": _("No permission to create {0}").format(doctype)}
+		
 		doc = frappe.new_doc(doctype)
 		doc.update(data)
 		doc.insert()
 		return {"status": "success", "message": _("{0} created").format(doctype)}
 	
 	return {"status": "error", "message": _("Action {0} not supported").format(action)}
+
 
 @frappe.whitelist()
 def get_search_data():
